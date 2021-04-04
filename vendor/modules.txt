@@ -39,6 +39,7 @@ github.com/ethereum/go-ethereum
 github.com/ethereum/go-ethereum/accounts
 github.com/ethereum/go-ethereum/accounts/abi
 github.com/ethereum/go-ethereum/accounts/abi/bind
+github.com/ethereum/go-ethereum/accounts/abi/bind/backends
 github.com/ethereum/go-ethereum/accounts/external
 github.com/ethereum/go-ethereum/accounts/keystore
 github.com/ethereum/go-ethereum/accounts/scwallet
@@ -75,6 +76,7 @@ github.com/ethereum/go-ethereum/crypto/secp256k1/libsecp256k1/include
 github.com/ethereum/go-ethereum/crypto/secp256k1/libsecp256k1/src
 github.com/ethereum/go-ethereum/crypto/secp256k1/libsecp256k1/src/modules/recovery
 github.com/ethereum/go-ethereum/eth/downloader
+github.com/ethereum/go-ethereum/eth/filters
 github.com/ethereum/go-ethereum/eth/protocols/eth
 github.com/ethereum/go-ethereum/eth/protocols/snap
 github.com/ethereum/go-ethereum/ethclient
@@ -220,11 +222,8 @@ github.com/ipfs/go-graphsync/storeutil
 # github.com/ipfs/go-ipfs v0.8.0
 ## explicit
 github.com/ipfs/go-ipfs
-github.com/ipfs/go-ipfs/blocks/blockstoreutil
 github.com/ipfs/go-ipfs/core
 github.com/ipfs/go-ipfs/core/bootstrap
-github.com/ipfs/go-ipfs/core/coreapi
-github.com/ipfs/go-ipfs/core/coreunix
 github.com/ipfs/go-ipfs/core/node
 github.com/ipfs/go-ipfs/core/node/helpers
 github.com/ipfs/go-ipfs/core/node/libp2p
@@ -232,12 +231,15 @@ github.com/ipfs/go-ipfs/fuse/mount
 github.com/ipfs/go-ipfs/keystore
 github.com/ipfs/go-ipfs/namesys
 github.com/ipfs/go-ipfs/namesys/republisher
-github.com/ipfs/go-ipfs/namesys/resolve
 github.com/ipfs/go-ipfs/p2p
 github.com/ipfs/go-ipfs/peering
 github.com/ipfs/go-ipfs/repo
 github.com/ipfs/go-ipfs/thirdparty/cidv0v1
 github.com/ipfs/go-ipfs/thirdparty/verifbs
+# github.com/ipfs/go-ipfs-api v0.2.0
+## explicit
+github.com/ipfs/go-ipfs-api
+github.com/ipfs/go-ipfs-api/options
 # github.com/ipfs/go-ipfs-blockstore v0.1.4
 github.com/ipfs/go-ipfs-blockstore
 # github.com/ipfs/go-ipfs-chunker v0.0.5
@@ -253,6 +255,7 @@ github.com/ipfs/go-ipfs-exchange-interface
 # github.com/ipfs/go-ipfs-exchange-offline v0.0.1
 github.com/ipfs/go-ipfs-exchange-offline
 # github.com/ipfs/go-ipfs-files v0.0.8
+## explicit
 github.com/ipfs/go-ipfs-files
 # github.com/ipfs/go-ipfs-pinner v0.1.1
 github.com/ipfs/go-ipfs-pinner
@@ -289,7 +292,6 @@ github.com/ipfs/go-log/v2
 github.com/ipfs/go-merkledag
 github.com/ipfs/go-merkledag/dagutils
 github.com/ipfs/go-merkledag/pb
-github.com/ipfs/go-merkledag/test
 # github.com/ipfs/go-metrics-interface v0.0.1
 github.com/ipfs/go-metrics-interface
 # github.com/ipfs/go-mfs v0.1.2
@@ -303,9 +305,7 @@ github.com/ipfs/go-peertaskqueue/peertask
 github.com/ipfs/go-peertaskqueue/peertracker
 # github.com/ipfs/go-unixfs v0.2.4
 github.com/ipfs/go-unixfs
-github.com/ipfs/go-unixfs/file
 github.com/ipfs/go-unixfs/hamt
-github.com/ipfs/go-unixfs/importer/balanced
 github.com/ipfs/go-unixfs/importer/helpers
 github.com/ipfs/go-unixfs/importer/trickle
 github.com/ipfs/go-unixfs/io
@@ -314,10 +314,8 @@ github.com/ipfs/go-unixfs/pb
 # github.com/ipfs/go-verifcid v0.0.1
 github.com/ipfs/go-verifcid
 # github.com/ipfs/interface-go-ipfs-core v0.4.0
-github.com/ipfs/interface-go-ipfs-core
 github.com/ipfs/interface-go-ipfs-core/options
 github.com/ipfs/interface-go-ipfs-core/options/namesys
-github.com/ipfs/interface-go-ipfs-core/path
 # github.com/ipld/go-ipld-prime v0.5.1-0.20201021195245-109253e8a018
 github.com/ipld/go-ipld-prime
 github.com/ipld/go-ipld-prime/codec/dagcbor
@@ -607,6 +605,8 @@ github.com/whyrusleeping/go-keyspace
 github.com/whyrusleeping/mdns
 # github.com/whyrusleeping/multiaddr-filter v0.0.0-20160516205228-e903e4adabd7
 github.com/whyrusleeping/multiaddr-filter
+# github.com/whyrusleeping/tar-utils v0.0.0-20201201191210-20a61371de5b
+github.com/whyrusleeping/tar-utils
 # github.com/whyrusleeping/timecache v0.0.0-20160911033111-cfcb2f1abfee
 github.com/whyrusleeping/timecache
 # go.opencensus.io v0.22.5
@@ -728,3 +728,6 @@ google.golang.org/protobuf/runtime/protoimpl
 google.golang.org/protobuf/types/descriptorpb
 # gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce
 gopkg.in/natefinch/npipe.v2
+# gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c
+## explicit
+gopkg.in/yaml.v3
