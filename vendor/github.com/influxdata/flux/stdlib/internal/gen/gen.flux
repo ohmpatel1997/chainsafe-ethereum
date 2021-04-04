@@ -1,3 +1,0 @@
-package gen
-
-builtin tables
