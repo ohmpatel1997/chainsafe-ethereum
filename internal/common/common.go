@@ -8,11 +8,12 @@ import (
 type Schema struct {
 	PrivateKey      string `yaml:"privatekey"`
 	ContractAddress string `yaml:"contractaddress"`
+	Ipfshost string `yaml:"ipfshost"`
 }
 
-func ReadConf(filename string) (Schema, error) {
+func ReadConf(filePath string) (Schema, error) {
 	var shema Schema
-	buf, err := ioutil.ReadFile(filename)
+	buf, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return shema, err
 	}

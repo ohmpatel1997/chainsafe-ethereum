@@ -3,17 +3,14 @@ package service
 import (
 	"context"
 	"fmt"
-	files "github.com/ipfs/go-ipfs-files"
-	"github.com/ipfs/go-ipfs/core/coreapi"
-	//"github.com/ipfs/go-ipfs/core/coreunix"
-	//"github.com/ipfs/go-ipfs/core/node"
-	//"github.com/ipfs/interface-go-ipfs-core/path"
-	//"path/filepath"
-
+	shell "github.com/ipfs/go-ipfs-api"
 	core "github.com/ipfs/go-ipfs/core"
 	"github.com/sirupsen/logrus"
+	"chainsafe/internal/common"
 	"os"
 )
+
+const pathToEnvFile = "../env.yml"
 
 type IpfsService interface {
 	SaveFile(context.Context, *os.File) (string, error)
@@ -43,43 +40,20 @@ func (i ipfsService) SaveFile(ctx context.Context, file *os.File) (string, error
 		return "", fmt.Errorf("file not found")
 	}
 
-	coreAPI, err := coreapi.NewCoreAPI(i.node)
+	conf, err := common.ReadConf(pathToEnvFile)
 	if err != nil {
-		return "", err
+		logrus.Error("error while parsing env file. Error: ", err.Error())
+	    return "", err
 	}
 
-	//stat, err := coreAPI.Block().Put(ctx, file)
-	//if err != nil {
-	//	fmt.Println("error occurred here-->", err.Error())
-	//	return "", err
-	//}
-	//
-	//return stat.Path().Cid().String(), nil
-	//
-
-	//adder, err := coreunix.NewAdder(ctx, i.node.Pinning, i.node.Blockstore, i.node.DAG)
-	//if err != nil {
-	//	return "", err
-	//}
-	//
-	//fileReader := files.NewReaderFile(file)
-	//node, err := adder.AddAllAndPin(fileReader)
-	//if err != nil {
-	//	return "", err
-	//}
-	//
-	//stat, err := node.Stat()
-	//if err != nil {
-	//	return "", err
-	//}
-	//return stat.Hash, nil
-
-	path, err := coreAPI.Unixfs().Add(ctx, files.NewReaderFile(file))
+	sh := shell.NewShell(fmt.Sprintf("localhost:%s", conf.Ipfshost))
+	cid, err := sh.Add(file)
 	if err != nil {
-		logrus.Error("error while adding file. Error: ", err.Error())
-		return "", err
+        logrus.Error("error while adding file. Error: ", err.Error())
+	    return "", err
 	}
 
-	return path.Cid().String(), nil
+	return cid, nil
+	
 
 }
