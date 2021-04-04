@@ -1,0 +1,41 @@
+body {
+	margin: 20px;
+	font-family: Go;
+	font-size: 14px;
+	color: rgb(35, 35, 35);
+}
+a {
+	color: #4183c4;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+
+.table {
+	font-size: 14px;
+	border-collapse: collapse;
+	background-color: transparent;
+	width: 100%;
+	max-width: 100%;
+	margin-bottom: 20px;
+}
+.table th, .table td {
+	padding: 8px;
+	line-height: 1.42857143;
+	vertical-align: top;
+}
+.table td {
+	border-top: 1px solid #dddddd;
+}
+.table thead th {
+	text-align: left;
+	vertical-align: bottom;
+	border-bottom: 2px solid #dddddd;
+}
+.table .table {
+	background-color: #fff;
+}
+.table-sm th, .table-sm td {
+	padding: 5px;
+}

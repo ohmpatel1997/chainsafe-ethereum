@@ -1,0 +1,67 @@
+body {
+	margin: 20px;
+	font-family: Go;
+	font-size: 16px;
+	color: rgb(35, 35, 35);
+}
+a {
+	color: #4183c4;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+a.blue {
+	color: rgb(138, 178, 219);
+}
+a.blue:hover {
+	color: #4183c4;
+}
+
+div.activity {
+	font-size: 14px;
+	word-break: break-word;
+}
+div.activity code {
+	font-family: "Go Mono";
+	font-size: 12px;
+}
+.activity div.events-heading {
+	color: #666;
+	margin-bottom: 6px;
+}
+.activity div.events-heading:not(:first-child) {
+	margin-top: 30px;
+}
+.activity div.event {
+	padding-top: 16px;
+	padding-bottom: 16px;
+	border-top: 1px solid #f0f0f0;
+}
+.activity div.event.wip {
+	background-color: #ffffdd;
+}
+.activity span.icon {
+	color: #bbb;
+	display: inline-block;
+	width: 16px;
+	margin-left: 16px;
+	margin-right: 16px;
+	vertical-align: middle;
+}
+.activity span.time {
+	color: #bbb;
+	font-size: 12px;
+	margin-left: 4px;
+}
+
+.activity div.details {
+	margin: 8px 0 0 48px;
+}
+.activity div.details a.black {
+	color: rgb(35, 35, 35);
+	text-decoration: none;
+}
+.activity div.details a.black:hover {
+	color: #4183c4;
+}

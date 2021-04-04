@@ -1,0 +1,142 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: quay.io/influxdb/flux-build:latest
+    environment:
+      GOCACHE: /tmp/go-cache
+      GOFLAGS: -p=8
+      GOPATH: /tmp/go
+      GO111MODULE: 'on' # must be quoted to force string type instead of boolean type
+      SCCACHE_CACHE_SIZE: 1G
+    steps:
+      - checkout
+      # Populate GOCACHE.
+      - restore_cache:
+          name: Restoring GOCACHE
+          keys:
+            - flux-gocache-{{ .Branch }}-{{ .Revision }} # Matches when retrying a single run.
+            - flux-gocache-{{ .Branch }}-                # Matches a new commit on an existing branch.
+            - flux-gocache-                              # Matches a new branch.
+      # Populate GOPATH/pkg.
+      - restore_cache:
+          name: Restoring GOPATH/pkg/mod
+          keys:
+            - flux-gomod-{{checksum "go.sum"}}
+      # Populate Rust cache
+      - restore_cache:
+          name: Restoring Rust Cache
+          keys:
+            - flux-rust-{{ .Branch }}-{{ .Revision }} # Matches when retrying a single run.
+            - flux-rust-{{ .Branch }}-                # Matches a new commit on an existing branch.
+            - flux-rust-                              # Matches a new branch.
+      # Run tests
+      - run: make checkfmt
+      - run: make checktidy
+      - run: make vet
+      - run: make staticcheck
+      - run: make checkgenerate
+      - run: make libflux-wasm
+      - run: make test GO_TEST_FLAGS='-coverprofile=coverage.txt -covermode=atomic'
+      - run:
+          name: Uploading coverage report
+          command: |
+            bash <(curl -s https://codecov.io/bash)
+      - save_cache:
+          name: Saving GOCACHE
+          key: flux-gocache-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - /tmp/go-cache
+          when: always
+      - save_cache:
+          name: Saving GOPATH/pkg/mod
+          key: flux-gomod-{{checksum "go.sum"}}
+          paths:
+            - /tmp/go/pkg/mod
+      - save_cache:
+          name: Saving Rust Cache
+          key: flux-rust-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - "~/.cache/sccache"
+          when: always
+  test-race:
+    docker:
+      - image: quay.io/influxdb/flux-build:latest
+    environment:
+      GOPATH: /tmp/go
+      GOFLAGS: -p=8
+      GO111MODULE: 'on' # must be quoted to force string type instead of boolean type
+    steps:
+      - checkout
+      # Building go with -race does not use the cache
+      # Populate GOPATH/pkg.
+      - restore_cache:
+          name: Restoring GOPATH/pkg/mod
+          keys:
+            - flux-gomod-{{checksum "go.sum"}}
+      # Run tests
+      - run: make test-race
+      # No need to save the pkg/mod cache since the other job does it
+  test-bench:
+    docker:
+      - image: quay.io/influxdb/flux-build:latest
+    environment:
+      GOPATH: /tmp/go
+      GOFLAGS: -p=8
+      GO111MODULE: 'on' # must be quoted to force string type instead of boolean type
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restoring GOPATH/pkg/mod
+          keys:
+            - flux-gomod-{{checksum "go.sum"}}
+      # Run tests
+      - run: make test-bench
+      # No need to save the pkg/mod cache since the other job does it
+  test-valgrind:
+    docker:
+      - image: quay.io/influxdb/flux-build:latest
+    steps:
+      - checkout
+      - run: make test-valgrind
+
+  release:
+    docker:
+      - image: circleci/golang:1.12
+    environment:
+      GOCACHE: /tmp/go-cache
+      GOFLAGS: -p=8
+      GOPATH: /tmp/go
+      GO111MODULE: 'on' # must be quoted to force string type instead of boolean type
+    steps:
+      - checkout
+      - run:
+          name: Generate changelog
+          command: |
+            ./gotool.sh github.com/influxdata/changelog generate \
+                --version $CIRCLE_TAG \
+                --commit-url https://github.com/influxdata/flux/commit \
+                -o release-notes.txt
+      - run:
+          name: Perform release
+          command: |
+            ./gotool.sh github.com/goreleaser/goreleaser release \
+                --rm-dist --release-notes release-notes.txt
+
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - test
+      - test-race
+      - test-bench
+      - test-valgrind
+
+  release:
+    jobs:
+      - release:
+          filters:
+            tags:
+              only: /^v\d\.\d+\.\d+$/
+            branches:
+              ignore: /.*/
