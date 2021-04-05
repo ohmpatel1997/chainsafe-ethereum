@@ -68,7 +68,3 @@ func main() {
 
 	_, _ = instance, tx
 }
-
-//0xBbC4b74f844214DB63D2a66552d7FB78abE8100c -> ganache CLI
-
-//0x786D3Afdba9d314046d2468Eb80101eB6B783e9C -> ganache UI
